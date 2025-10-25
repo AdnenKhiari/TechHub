@@ -1,14 +1,25 @@
 import { motion } from "framer-motion";
 import { Sparkles, Code2, Users, Zap } from "lucide-react";
+import Iridescence from "./Iridescence";
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#0a0a1f] via-[#1a1a3e] to-[#0a0a1f]">
+      {/* 3D Iridescent Background */}
+      <div className="absolute inset-0 z-0">
+        <Iridescence
+          color={[0.5, 0.3, 1]}
+          mouseReact={true}
+          amplitude={0.15}
+          speed={0.8}
+        />
+      </div>
+
       {/* Animated Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.1)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.1)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,black,transparent)] z-[1]" />
       
       {/* Floating Particles */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-[2]">
         {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
@@ -31,7 +42,7 @@ export default function Hero() {
         ))}
       </div>
 
-      <div className="container mx-auto px-4 z-10">
+      <div className="container mx-auto px-4 z-10 relative">
         <div className="max-w-5xl mx-auto text-center">
           {/* Animated Icons */}
           <motion.div
@@ -118,7 +129,7 @@ export default function Hero() {
 
       {/* Scroll Indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >

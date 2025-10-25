@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Clock, DollarSign, BookOpen, ChevronDown, Filter, Calendar } from "lucide-react";
+import { Search, Clock, DollarSign, BookOpen, ChevronDown, Filter, Calendar, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Course {
   id: number;
@@ -143,6 +144,7 @@ const curriculums: Curriculum[] = [
 ];
 
 export default function CurriculumList() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedLevel, setSelectedLevel] = useState("All");
@@ -346,15 +348,27 @@ export default function CurriculumList() {
                           ))}
                         </div>
                         
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                          }}
-                          className="w-full mt-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-shadow"
-                        >
-                          Enroll in {curriculum.title}
-                        </button>
+                        <div className="flex gap-4 mt-6">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/curriculum/${curriculum.id}`);
+                            }}
+                            className="flex-1 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-shadow flex items-center justify-center gap-2"
+                          >
+                            View Full Details
+                            <ArrowRight className="w-5 h-5" />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="flex-1 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/50 transition-shadow"
+                          >
+                            Enroll Now
+                          </button>
+                        </div>
                       </div>
                     </motion.div>
                   )}
