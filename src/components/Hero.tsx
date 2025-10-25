@@ -1,18 +1,69 @@
 import { motion } from "framer-motion";
 import { Sparkles, Code2, Users, Zap } from "lucide-react";
 import Iridescence from "./Iridescence";
+import GalaxyBackground from "./GalaxyBackground";
+import Ripple from "./Ripple";
+import FaultyTerminal from "./FaultyTerminal";
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#0a0a1f] via-[#1a1a3e] to-[#0a0a1f]">
       {/* 3D Iridescent Background */}
       <div className="absolute inset-0 z-0">
-        <Iridescence
-          color={[0.5, 0.3, 1]}
+       { /*<Iridescence
+          color={[0.2, 0.3, 0.4]}
           mouseReact={true}
-          amplitude={0.15}
+          amplitude={0.4}
           speed={0.8}
-        />
+        /> */
+        
+       /* <GalaxyBackground
+          mouseRepulsion={true}
+          mouseInteraction={true}
+          density={1.5}
+          glowIntensity={0.5}
+          saturation={0.8}
+          hueShift={150}
+        />*/
+        /*<Ripple
+        enableRainbow={false}
+        gridColor="#5227ff"
+        rippleIntensity={0.18}
+        gridSize={14}
+        gridThickness={10}
+        glowIntensity={1}
+        mouseInteraction={true}
+        mouseInteractionRadius={1.4}
+        vignetteStrength={100}
+        gridRotation={155}
+        fadeDistance={10}
+        opacity={0.4}
+      />*/
+
+      <FaultyTerminal
+      scale={3}
+      gridMul={[2, 1]}
+      digitSize={1.2}
+      timeScale={0.5}
+      pause={false}
+      scanlineIntensity={0.5}
+      glitchAmount={1}
+      flickerAmount={1}
+      noiseAmp={1}
+      chromaticAberration={0}
+      dither={0.2}
+      curvature={0.2}
+      tint="#8F58C5"
+      mouseReact={true}
+      mouseStrength={4}
+      pageLoadAnimation={true}
+      brightness={0.6}
+      
+    />
+
+        }
+
+
       </div>
 
       {/* Animated Grid Background */}

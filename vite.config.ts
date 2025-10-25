@@ -20,5 +20,8 @@ export default defineConfig({
   server: {
     // @ts-ignore
     allowedHosts: true,
+    watch: {
+      ignored: ['!**/node_modules/**', '!**/dist/**']
+    }
   }
 });
