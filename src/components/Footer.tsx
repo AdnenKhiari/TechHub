@@ -1,5 +1,6 @@
 import { Github, Twitter, Linkedin, Mail, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
+import LaserFlow from "./LaserFlow";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -19,11 +20,14 @@ export default function Footer() {
   ];
 
   return (
+    <>
+
     <footer className="relative bg-gradient-to-b from-[#0a0a1f] to-[#050510] border-t border-purple-500/20">
       {/* Glow Effect */}
+
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
 
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-16 pb-32">
         {/* Top Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           {/* Brand Column */}
@@ -125,6 +129,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </footer>
+
+    </footer></>
   );
 }
