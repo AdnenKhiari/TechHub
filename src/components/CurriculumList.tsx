@@ -2,149 +2,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Clock, DollarSign, BookOpen, ChevronDown, Filter, Calendar, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-interface Course {
-  id: number;
-  title: string;
-  hours: number;
-  subject: string;
-}
-
-interface Curriculum {
-  id: number;
-  title: string;
-  category: string;
-  level: string;
-  duration: string;
-  price: number;
-  startDate: string;
-  description: string;
-  courses: Course[];
-  totalHours: number;
-}
-
-const curriculums: Curriculum[] = [
-  {
-    id: 1,
-    title: "Full-Stack Web Development Bootcamp",
-    category: "Web Development",
-    level: "Intermediate",
-    duration: "12 weeks",
-    price: 2999,
-    startDate: "March 15, 2024",
-    description: "Master modern web development from frontend to backend with hands-on projects",
-    totalHours: 240,
-    courses: [
-      { id: 1, title: "HTML, CSS & Responsive Design", hours: 30, subject: "Frontend Basics" },
-      { id: 2, title: "JavaScript & TypeScript Fundamentals", hours: 40, subject: "Programming" },
-      { id: 3, title: "React & Modern Frontend", hours: 50, subject: "Frontend Framework" },
-      { id: 4, title: "Node.js & Express Backend", hours: 45, subject: "Backend Development" },
-      { id: 5, title: "PostgreSQL & Database Design", hours: 35, subject: "Database" },
-      { id: 6, title: "AWS Deployment & DevOps", hours: 40, subject: "Cloud & Deployment" }
-    ]
-  },
-  {
-    id: 2,
-    title: "AI & Machine Learning Engineer",
-    category: "Artificial Intelligence",
-    level: "Advanced",
-    duration: "16 weeks",
-    price: 3999,
-    startDate: "April 1, 2024",
-    description: "Build intelligent applications with Python, TensorFlow, and cutting-edge ML frameworks",
-    totalHours: 320,
-    courses: [
-      { id: 1, title: "Python for Data Science", hours: 40, subject: "Programming" },
-      { id: 2, title: "Mathematics for ML", hours: 35, subject: "Mathematics" },
-      { id: 3, title: "Neural Networks & Deep Learning", hours: 60, subject: "Deep Learning" },
-      { id: 4, title: "TensorFlow & PyTorch", hours: 55, subject: "ML Frameworks" },
-      { id: 5, title: "NLP & Text Processing", hours: 50, subject: "Natural Language" },
-      { id: 6, title: "Computer Vision", hours: 45, subject: "Image Processing" },
-      { id: 7, title: "Model Deployment & MLOps", hours: 35, subject: "Production ML" }
-    ]
-  },
-  {
-    id: 3,
-    title: "Mobile App Development with React Native",
-    category: "Mobile Development",
-    level: "Intermediate",
-    duration: "10 weeks",
-    price: 2499,
-    startDate: "March 22, 2024",
-    description: "Create cross-platform mobile apps for iOS and Android with React Native",
-    totalHours: 200,
-    courses: [
-      { id: 1, title: "React Native Fundamentals", hours: 40, subject: "Mobile Framework" },
-      { id: 2, title: "Mobile UI/UX Design", hours: 30, subject: "Design" },
-      { id: 3, title: "Navigation & State Management", hours: 35, subject: "App Architecture" },
-      { id: 4, title: "Native APIs & Device Features", hours: 40, subject: "Native Integration" },
-      { id: 5, title: "App Store Deployment", hours: 25, subject: "Publishing" },
-      { id: 6, title: "Performance Optimization", hours: 30, subject: "Optimization" }
-    ]
-  },
-  {
-    id: 4,
-    title: "Data Science & Analytics",
-    category: "Data Science",
-    level: "Beginner",
-    duration: "14 weeks",
-    price: 2799,
-    startDate: "April 5, 2024",
-    description: "Learn to analyze, visualize, and derive insights from data using Python and modern tools",
-    totalHours: 280,
-    courses: [
-      { id: 1, title: "Python Programming Basics", hours: 35, subject: "Programming" },
-      { id: 2, title: "Statistics & Probability", hours: 40, subject: "Mathematics" },
-      { id: 3, title: "Data Analysis with Pandas", hours: 45, subject: "Data Analysis" },
-      { id: 4, title: "Data Visualization", hours: 40, subject: "Visualization" },
-      { id: 5, title: "SQL & Database Queries", hours: 35, subject: "Database" },
-      { id: 6, title: "Machine Learning Basics", hours: 50, subject: "ML Introduction" },
-      { id: 7, title: "Real-World Projects", hours: 35, subject: "Capstone" }
-    ]
-  },
-  {
-    id: 5,
-    title: "Cloud Architecture & DevOps",
-    category: "Cloud Computing",
-    level: "Advanced",
-    duration: "12 weeks",
-    price: 3499,
-    startDate: "March 29, 2024",
-    description: "Master cloud infrastructure, CI/CD pipelines, and modern DevOps practices",
-    totalHours: 240,
-    courses: [
-      { id: 1, title: "AWS Cloud Fundamentals", hours: 40, subject: "Cloud Basics" },
-      { id: 2, title: "Docker & Containerization", hours: 35, subject: "Containers" },
-      { id: 3, title: "Kubernetes Orchestration", hours: 45, subject: "Orchestration" },
-      { id: 4, title: "CI/CD Pipelines", hours: 40, subject: "Automation" },
-      { id: 5, title: "Infrastructure as Code", hours: 40, subject: "IaC" },
-      { id: 6, title: "Monitoring & Logging", hours: 40, subject: "Observability" }
-    ]
-  },
-  {
-    id: 6,
-    title: "Cybersecurity Specialist",
-    category: "Security",
-    level: "Intermediate",
-    duration: "14 weeks",
-    price: 3299,
-    startDate: "April 8, 2024",
-    description: "Learn to protect systems, networks, and data from cyber threats",
-    totalHours: 280,
-    courses: [
-      { id: 1, title: "Security Fundamentals", hours: 35, subject: "Basics" },
-      { id: 2, title: "Network Security", hours: 45, subject: "Networks" },
-      { id: 3, title: "Ethical Hacking", hours: 50, subject: "Penetration Testing" },
-      { id: 4, title: "Web Application Security", hours: 45, subject: "Web Security" },
-      { id: 5, title: "Cryptography", hours: 40, subject: "Encryption" },
-      { id: 6, title: "Incident Response", hours: 35, subject: "Security Operations" },
-      { id: 7, title: "Security Compliance", hours: 30, subject: "Governance" }
-    ]
-  }
-];
+import { useCurriculums } from "../hooks/useCurriculums";
 
 export default function CurriculumList() {
   const navigate = useNavigate();
+  const { curriculums, loading, error } = useCurriculums();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedLevel, setSelectedLevel] = useState("All");
@@ -160,6 +22,26 @@ export default function CurriculumList() {
     const matchesLevel = selectedLevel === "All" || curriculum.level === selectedLevel;
     return matchesSearch && matchesCategory && matchesLevel;
   });
+
+  if (loading) {
+    return (
+      <section id="curriculums" className="relative py-24 bg-gradient-to-b from-[#0a0a1f] to-[#1a1a3e] overflow-hidden">
+        <div className="container mx-auto px-4 text-center">
+          <div className="text-xl text-gray-300">Loading curriculums...</div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="curriculums" className="relative py-24 bg-gradient-to-b from-[#0a0a1f] to-[#1a1a3e] overflow-hidden">
+        <div className="container mx-auto px-4 text-center">
+          <div className="text-xl text-red-400">Error: {error}</div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="curriculums" className="relative py-24 bg-gradient-to-b from-[#0a0a1f] to-[#1a1a3e] overflow-hidden">
@@ -211,9 +93,9 @@ export default function CurriculumList() {
                 <Filter className="w-5 h-5 text-purple-400" />
                 <span className="text-gray-300 font-semibold">Category:</span>
                 <div className="flex flex-wrap gap-2">
-                  {categories.map(category => (
+                  {categories.map((category, idx) => (
                     <button
-                      key={category}
+                      key={`category-${idx}`}
                       onClick={() => setSelectedCategory(category)}
                       className={`px-4 py-2 rounded-lg font-medium transition-all ${
                         selectedCategory === category
@@ -230,9 +112,9 @@ export default function CurriculumList() {
               <div className="flex items-center gap-2">
                 <span className="text-gray-300 font-semibold">Level:</span>
                 <div className="flex flex-wrap gap-2">
-                  {levels.map(level => (
+                  {levels.map((level, idx) => (
                     <button
-                      key={level}
+                      key={`level-${idx}`}
                       onClick={() => setSelectedLevel(level)}
                       className={`px-4 py-2 rounded-lg font-medium transition-all ${
                         selectedLevel === level
@@ -284,15 +166,11 @@ export default function CurriculumList() {
                       <div className="flex flex-wrap gap-4 text-sm">
                         <div className="flex items-center gap-2 text-gray-300">
                           <Clock className="w-4 h-4 text-purple-400" />
-                          <span>{curriculum.duration} • {curriculum.totalHours} hours</span>
+                          <span>{curriculum.duration} • {curriculum.total_hours} hours</span>
                         </div>
                         <div className="flex items-center gap-2 text-gray-300">
                           <Calendar className="w-4 h-4 text-purple-400" />
-                          <span>Starts: {curriculum.startDate}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-gray-300">
-                          <BookOpen className="w-4 h-4 text-purple-400" />
-                          <span>{curriculum.courses.length} Courses</span>
+                          <span>Starts: {new Date(curriculum.start_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                         </div>
                       </div>
                     </div>
@@ -327,27 +205,6 @@ export default function CurriculumList() {
                       className="border-t border-white/10"
                     >
                       <div className="p-6 bg-white/5">
-                        <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                          <BookOpen className="w-5 h-5 text-purple-400" />
-                          Course Breakdown
-                        </h4>
-                        <div className="grid md:grid-cols-2 gap-4">
-                          {curriculum.courses.map((course) => (
-                            <div
-                              key={course.id}
-                              className="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors"
-                            >
-                              <div className="flex justify-between items-start mb-2">
-                                <h5 className="font-semibold text-white">{course.title}</h5>
-                                <span className="text-purple-400 text-sm font-medium whitespace-nowrap ml-2">
-                                  {course.hours}h
-                                </span>
-                              </div>
-                              <p className="text-sm text-gray-400">{course.subject}</p>
-                            </div>
-                          ))}
-                        </div>
-                        
                         <div className="flex gap-4 mt-6">
                           <button
                             onClick={(e) => {
