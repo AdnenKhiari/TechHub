@@ -5,6 +5,7 @@ import { useState } from "react";
 import ContactForm from "../components/ContactForm";
 import { Toaster } from "../components/ui/toaster";
 import { useCurriculum } from "../hooks/useCurriculums";
+import VideoPlayer from "../components/VideoPlayer";
 
 export default function CurriculumDetailPage() {
   const { id } = useParams();
@@ -39,16 +40,16 @@ export default function CurriculumDetailPage() {
       {/* Header */}
       <div className="relative bg-gradient-to-br from-purple-900/30 via-blue-900/30 to-pink-900/30 py-20 overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+')] opacity-20"></div>
-        
+
         <div className="container mx-auto px-4 relative z-10">
-          <Link 
-            to="/" 
-            className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 mb-8 transition-colors"
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 mb-8 py-4 px-4 transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             Back to Courses
           </Link>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -69,18 +70,26 @@ export default function CurriculumDetailPage() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Video Section */}
-            {curriculum.video_url && (
-              <motion.div
-                className="glass-effect rounded-2xl overflow-hidden"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                <div className="aspect-video bg-black/50 flex items-center justify-center">
-                  <Play className="w-20 h-20 text-purple-400" />
-                </div>
-              </motion.div>
-            )}
+            <motion.div
+              className="glass-effect rounded-2xl overflow-hidden"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <div className="flex items-center gap-2 p-6 pb-4">
+                <Play className="w-6 h-6 text-purple-400" />
+                <h2 className="text-2xl font-bold text-white">Course Preview</h2>
+              </div>
+              <div className="px-6 pb-6">
+                <VideoPlayer
+                  src={curriculum.video_url || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'}
+                  className="w-full"
+                  onReady={(player) => {
+                    console.log('Video player ready for curriculum:', curriculum.title);
+                  }}
+                />
+              </div>
+            </motion.div>
 
             {/* What You'll Learn */}
             {curriculum.outcomes && curriculum.outcomes.length > 0 && (

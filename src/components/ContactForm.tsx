@@ -2,9 +2,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send, Mail, User, MessageSquare, Phone, MapPin, Clock, GraduationCap } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useCurriculumTitles } from "../hooks/useCurriculumTitles";
 
 export default function ContactForm() {
   const { toast } = useToast();
+  const { titles: courses, loading: coursesLoading, error: coursesError } = useCurriculumTitles();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -14,16 +16,6 @@ export default function ContactForm() {
   });
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const courses = [
-    "Full-Stack Web Development Bootcamp",
-    "AI & Machine Learning Engineer",
-    "Mobile App Development with React Native",
-    "Data Science & Analytics",
-    "Cloud Architecture & DevOps",
-    "Cybersecurity Specialist",
-    "Other / General Inquiry"
-  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -263,9 +255,12 @@ export default function ContactForm() {
                   onFocus={() => setFocusedField("course")}
                   onBlur={() => setFocusedField(null)}
                   required
-                  className="w-full bg-white/5 border border-white/10 rounded-lg pl-12 pr-4 py-4 text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none cursor-pointer"
+                  disabled={coursesLoading}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg pl-12 pr-4 py-4 text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all appearance-none cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <option value="" disabled className="bg-[#1a1a3e]">Select a course...</option>
+                  <option value="" disabled className="bg-[#1a1a3e]">
+                    {coursesLoading ? "Loading courses..." : "Select a course..."}
+                  </option>
                   {courses.map((course) => (
                     <option key={course} value={course} className="bg-[#1a1a3e]">
                       {course}
@@ -275,6 +270,11 @@ export default function ContactForm() {
                 <label className="absolute left-12 -top-2 text-xs text-purple-400 bg-[#1a1a3e] px-2">
                   Interested Course
                 </label>
+                {coursesError && (
+                  <p className="text-red-400 text-sm mt-1 ml-12">
+                    {coursesError}
+                  </p>
+                )}
               </div>
 
               {/* Message Field */}

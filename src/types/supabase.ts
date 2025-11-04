@@ -65,12 +65,14 @@ export type Database = {
         Row: {
           created_at: string | null
           description: string
+          category: string
           duration: string
           id: number
           level: string
           outcomes: string[]
           prerequisites: string[]
-          price: string
+          price: number
+          hours: number
           start_date: string
           title: string
           updated_at: string | null
@@ -79,12 +81,14 @@ export type Database = {
         Insert: {
           created_at?: string | null
           description: string
+          category: string
           duration: string
           id?: number
           level: string
           outcomes: string[]
           prerequisites: string[]
-          price: string
+          price: number
+          hours: number
           start_date: string
           title: string
           updated_at?: string | null
@@ -93,12 +97,14 @@ export type Database = {
         Update: {
           created_at?: string | null
           description?: string
+          category?: string
           duration?: string
           id?: number
           level?: string
           outcomes?: string[]
           prerequisites?: string[]
-          price?: string
+          price?: number
+          hours?: number
           start_date?: string
           title?: string
           updated_at?: string | null

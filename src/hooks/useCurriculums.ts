@@ -1,32 +1,11 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { Tables } from '../types/supabase';
 
-export interface Course {
-  id: number;
-  curriculum_id: number;
-  title: string;
-  subject: string;
-  description: string;
-  hours: number;
-  order_index: number;
-  details?: string[];
-}
-
-export interface Curriculum {
-  id: number;
-  title: string;
-  category: string;
-  level: string;
-  duration: string;
-  price: number;
-  start_date: string;
-  description: string;
-  total_hours: number;
-  outcomes?: string[];
-  prerequisites?: string[];
-  video_url?: string;
+export type Course = Tables<'courses'>;
+export type Curriculum = Tables<'curriculums'> & {
   courses?: Course[];
-}
+};
 
 export function useCurriculums() {
   const [curriculums, setCurriculums] = useState<Curriculum[]>([]);

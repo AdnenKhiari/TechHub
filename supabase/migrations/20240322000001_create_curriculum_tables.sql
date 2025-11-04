@@ -2,8 +2,10 @@ CREATE TABLE IF NOT EXISTS curriculums (
   id BIGSERIAL PRIMARY KEY,
   title TEXT NOT NULL,
   description TEXT NOT NULL,
+  category TEXT NOT NULL,
   duration TEXT NOT NULL,
-  price TEXT NOT NULL,
+  price INTEGER NOT NULL,
+  hours INTEGER NOT NULL,
   level TEXT NOT NULL,
   start_date TEXT NOT NULL,
   video_url TEXT,
@@ -28,12 +30,14 @@ CREATE TABLE IF NOT EXISTS courses (
 
 CREATE INDEX IF NOT EXISTS idx_courses_curriculum_id ON courses(curriculum_id);
 
-INSERT INTO curriculums (title, description, duration, price, level, start_date, video_url, outcomes, prerequisites) VALUES
+INSERT INTO curriculums (title, description, category, duration, price, hours, level, start_date, video_url, outcomes, prerequisites) VALUES
 (
   'React Native Mobile Development',
   'Master cross-platform mobile app development with React Native. Build production-ready iOS and Android applications.',
+  'Mobile Development',
   '16 weeks',
-  '$2,499',
+  2499,
+  240,
   'Intermediate',
   'March 15, 2024',
   'https://www.youtube.com/embed/dQw4w9WgXcQ',
@@ -55,8 +59,10 @@ INSERT INTO curriculums (title, description, duration, price, level, start_date,
 (
   'Full Stack Web Development',
   'Comprehensive full-stack development bootcamp covering frontend, backend, and deployment.',
+  'Web Development',
   '24 weeks',
-  '$3,499',
+  3499,
+  330,
   'Beginner to Advanced',
   'April 1, 2024',
   'https://www.youtube.com/embed/dQw4w9WgXcQ',
@@ -77,8 +83,10 @@ INSERT INTO curriculums (title, description, duration, price, level, start_date,
 (
   'Data Science & Machine Learning',
   'Learn data analysis, visualization, and machine learning with Python.',
+  'Data Science',
   '20 weeks',
-  '$2,999',
+  2999,
+  285,
   'Intermediate',
   'March 22, 2024',
   'https://www.youtube.com/embed/dQw4w9WgXcQ',

@@ -1,51 +1,40 @@
 import { motion } from "framer-motion";
-import { Calendar, BookOpen, Trophy, Clock } from "lucide-react";
-
-interface Cohort {
-  id: number;
-  title: string;
-  description: string;
-  startDate: string;
-  duration: string;
-  curriculum: string[];
-  level: string;
-  spots: number;
-}
-
-const cohorts: Cohort[] = [
-  {
-    id: 1,
-    title: "Full-Stack Web Development",
-    description: "Master modern web development with React, Node.js, and cloud deployment",
-    startDate: "March 15, 2024",
-    duration: "12 weeks",
-    curriculum: ["React & TypeScript", "Node.js & Express", "PostgreSQL", "AWS Deployment", "CI/CD Pipelines"],
-    level: "Intermediate",
-    spots: 8,
-  },
-  {
-    id: 2,
-    title: "AI & Machine Learning",
-    description: "Build intelligent applications with Python, TensorFlow, and modern ML frameworks",
-    startDate: "April 1, 2024",
-    duration: "16 weeks",
-    curriculum: ["Python Fundamentals", "Neural Networks", "TensorFlow & PyTorch", "NLP & Computer Vision", "Model Deployment"],
-    level: "Advanced",
-    spots: 5,
-  },
-  {
-    id: 3,
-    title: "Mobile App Development",
-    description: "Create cross-platform mobile apps with React Native and modern mobile technologies",
-    startDate: "March 22, 2024",
-    duration: "10 weeks",
-    curriculum: ["React Native", "Mobile UI/UX", "Native APIs", "App Store Deployment", "Performance Optimization"],
-    level: "Intermediate",
-    spots: 12,
-  },
-];
+import { Calendar, BookOpen, Trophy, Clock, Loader2, AlertCircle } from "lucide-react";
+import { useCohorts } from "../hooks/useCohorts";
 
 export default function CohortDetails() {
+  const { cohorts, loading, error } = useCohorts();
+
+  if (loading) {
+    return (
+      <section id="cohorts" className="relative py-24 bg-gradient-to-b from-[#0a0a1f] to-[#1a1a3e] overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="flex items-center gap-3 text-purple-300">
+              <Loader2 className="w-8 h-8 animate-spin" />
+              <span className="text-xl">Loading cohorts...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="cohorts" className="relative py-24 bg-gradient-to-b from-[#0a0a1f] to-[#1a1a3e] overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="flex items-center gap-3 text-red-400">
+              <AlertCircle className="w-8 h-8" />
+              <span className="text-xl">Failed to load cohorts: {error}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="cohorts" className="relative py-24 bg-gradient-to-b from-[#0a0a1f] to-[#1a1a3e] overflow-hidden">
       {/* Background Effects */}
@@ -84,8 +73,8 @@ export default function CohortDetails() {
                   <span className="px-3 py-1 bg-purple-600/30 text-purple-300 rounded-full text-sm font-semibold">
                     {cohort.level}
                   </span>
-                  <span className="px-3 py-1 bg-green-600/30 text-green-300 rounded-full text-sm font-semibold">
-                    {cohort.spots} spots left
+                  <span className="px-3 py-1 bg-blue-600/30 text-blue-300 rounded-full text-sm font-semibold">
+                    {cohort.category}
                   </span>
                 </div>
                 <h3 className="text-2xl font-bold mb-2 text-white group-hover:text-purple-300 transition-colors">
@@ -94,11 +83,17 @@ export default function CohortDetails() {
                 <p className="text-gray-400">{cohort.description}</p>
               </div>
 
+
+
               {/* Details */}
               <div className="space-y-3 mb-6">
                 <div className="flex items-center gap-3 text-gray-300">
                   <Calendar className="w-5 h-5 text-purple-400" />
-                  <span>Starts: {cohort.startDate}</span>
+                  <span>Starts: {new Date(cohort.start_date).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300">
                   <Clock className="w-5 h-5 text-purple-400" />

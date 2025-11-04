@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Clock, DollarSign, BookOpen, ChevronDown, Filter, Calendar, ArrowRight } from "lucide-react";
+import { Search, Clock, DollarSign, BookOpen, ChevronDown, Filter, Calendar, ArrowRight, PlayCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCurriculums } from "../hooks/useCurriculums";
+import { useCourses } from "../hooks/useCourses";
 
 export default function CurriculumList() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function CurriculumList() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedLevel, setSelectedLevel] = useState("All");
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const { courses, loading: coursesLoading } = useCourses(expandedId);
 
   const categories = ["All", ...Array.from(new Set(curriculums.map(c => c.category)))];
   const levels = ["All", "Beginner", "Intermediate", "Advanced"];
@@ -166,7 +168,7 @@ export default function CurriculumList() {
                       <div className="flex flex-wrap gap-4 text-sm">
                         <div className="flex items-center gap-2 text-gray-300">
                           <Clock className="w-4 h-4 text-purple-400" />
-                          <span>{curriculum.duration} • {curriculum.total_hours} hours</span>
+                          <span>{curriculum.duration} • {curriculum.hours} hours</span>
                         </div>
                         <div className="flex items-center gap-2 text-gray-300">
                           <Calendar className="w-4 h-4 text-purple-400" />
@@ -205,7 +207,88 @@ export default function CurriculumList() {
                       className="border-t border-white/10"
                     >
                       <div className="p-6 bg-white/5">
-                        <div className="flex gap-4 mt-6">
+                        {/* Course List */}
+                        <div className="mb-6">
+                          <h4 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                            <BookOpen className="w-5 h-5 text-purple-400" />
+                            Course Curriculum ({courses.length} courses)
+                          </h4>
+                          
+                          {coursesLoading ? (
+                            <div className="text-center py-8">
+                              <div className="text-gray-400">Loading courses...</div>
+                            </div>
+                          ) : courses.length > 0 ? (
+                            <div className="space-y-3">
+                              {courses.map((course, courseIndex) => (
+                                <motion.div
+                                  key={course.id}
+                                  className="bg-white/5 rounded-lg p-4 border border-white/10 hover:border-purple-500/30 transition-colors"
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ duration: 0.3, delay: courseIndex * 0.1 }}
+                                >
+                                  <div className="flex items-start gap-4">
+                                    <div className="flex-shrink-0">
+                                      <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full flex items-center justify-center text-white font-bold">
+                                        {courseIndex + 1}
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="flex-1">
+                                      <div className="flex items-start justify-between gap-4">
+                                        <div className="flex-1">
+                                          <h5 className="text-lg font-semibold text-white mb-1">
+                                            {course.title}
+                                          </h5>
+                                          <p className="text-sm text-purple-300 mb-2 font-medium">
+                                            {course.subject}
+                                          </p>
+                                          <p className="text-gray-400 text-sm mb-3">
+                                            {course.description}
+                                          </p>
+                                          
+                                          {course.details && course.details.length > 0 && (
+                                            <div className="space-y-1">
+                                              <p className="text-sm font-medium text-gray-300">What you'll learn:</p>
+                                              <ul className="text-sm text-gray-400 space-y-1">
+                                                {course.details.slice(0, 3).map((detail, idx) => (
+                                                  <li key={idx} className="flex items-start gap-2">
+                                                    <PlayCircle className="w-3 h-3 text-purple-400 mt-0.5 flex-shrink-0" />
+                                                    <span>{detail}</span>
+                                                  </li>
+                                                ))}
+                                                {course.details.length > 3 && (
+                                                  <li className="text-purple-300 text-xs">
+                                                    +{course.details.length - 3} more topics
+                                                  </li>
+                                                )}
+                                              </ul>
+                                            </div>
+                                          )}
+                                        </div>
+                                        
+                                        <div className="text-right flex-shrink-0">
+                                          <div className="flex items-center gap-1 text-sm text-gray-300">
+                                            <Clock className="w-4 h-4 text-purple-400" />
+                                            <span>{course.hours}h</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </motion.div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-center py-8">
+                              <p className="text-gray-400">No courses available for this curriculum</p>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex gap-4">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
