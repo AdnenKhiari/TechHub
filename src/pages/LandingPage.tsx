@@ -4,6 +4,7 @@ import Hero from "../components/Hero";
 import AboutSection from "../components/AboutSection";
 import CurriculumList from "../components/CurriculumList";
 import ContactForm from "../components/ContactForm";
+import Testimonials from "../components/Testimonials";
 import { Toaster } from "../components/ui/toaster";
 
 export default function LandingPage() {
@@ -13,6 +14,7 @@ export default function LandingPage() {
       <Hero />
       <AboutSection />
       <CurriculumList />
+      <Testimonials />
       <ContactForm />
       <Footer />
       <Toaster />
